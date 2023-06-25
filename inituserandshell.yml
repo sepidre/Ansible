@@ -1,0 +1,67 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install global packages
+      ansible.builtin.package:
+        name: 
+          - zsh
+          - wget
+          - git
+        state: present
+    - name: Execute the command in remote shell; stdout goes to the specified file on the remote
+      ansible.builtin.shell: sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+
+
+- hosts: nonmac
+  become: yes
+  tasks:
+    - name: Create a login user
+      user:
+        name: sepidre
+        # get it with mkpasswd --method=sha-512 for non mac
+        password: '???'
+        uid: 1001
+        groups: # Empty by default, here we give it some groups
+        - docker
+        - sudo
+        - www-data
+        - users
+        state: present
+        shell: /bin/zsh       # Defaults to /bin/bash
+        system: no             # Defaults to no
+        createhome: yes        # Defaults to yes
+        home: /home/sepidre  # Defaults to /home/<username>
+- hosts: mac
+  become: yes
+  tasks:
+    - name: Create a login user
+      user:
+        name: sepidre
+        password: '1234'
+        uid: 1001
+        groups: # Empty by default, here we give it some groups
+        - docker
+        - sudo
+        - www-data
+        - users
+        state: present
+        shell: /bin/zsh       # Defaults to /bin/bash
+        system: no             # Defaults to no
+        createhome: yes        # Defaults to yes
+        home: /home/sepidre  # Defaults to /home/<username>
+- hosts: all
+  become: yes
+  tasks:        
+    - name: install public keys
+      ansible.posix.authorized_key:
+        user: sepidre
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    - name: Validate the sudoers file before saving
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%sudo'
+        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+        validate: /usr/sbin/visudo -cf %s

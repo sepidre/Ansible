@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install OhMyZSH
+      ansible.builtin.shell: sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+    - name: Install user packages
+      ansible.builtin.package:
+        name: 
+          - neofetch
+        state: present
+    - name: Install powerlevel10k via git module
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: ${ZSH_CUSTOM:-{{ HOME }}/.oh-my-zsh/custom}/themes/powerlevel10k
+    # Oder?
+    - name: Install powerlevel10k via shell module
+      ansible.builtin.shell: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    
