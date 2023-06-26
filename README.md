@@ -52,3 +52,5 @@ cp neofetch-themes/normal/acenoster.conf ~/.config/neofetch/config.conf
 ## to change rm old
 rm ~/.config/neofetch/config.conf
 ```
+
+ansible-playbook -i init-inventory inituserandshell.yml --extra-vars "usr=sepidre usrpwd=$6$R/4YUut1qdGneQFy$oB7bNV0GUykAeT0Xab/Cf0ORvXuX8wdsaETFO3qiOBpmL23Eu6nb2BZe5So5iaMvRQDWnK019elmox3EHRj.w0 usrpwdmac=1234"

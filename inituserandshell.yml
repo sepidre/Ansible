@@ -8,22 +8,19 @@
           - zsh
           - wget
           - git
+          - whois
         state: present
-    - name: Execute the command in remote shell; stdout goes to the specified file on the remote
-      ansible.builtin.shell: sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-
 
 - hosts: nonmac
   become: yes
   tasks:
     - name: Create a login user
       user:
-        name: sepidre
+        name: '{{ usr }}'
         # get it with mkpasswd --method=sha-512 for non mac
-        password: '???'
+        password: '{{ usrpwd }}' #'$6$R/4YUut1qdGneQFy$oB7bNV0GUykAeT0Xab/Cf0ORvXuX8wdsaETFO3qiOBpmL23Eu6nb2BZe5So5iaMvRQDWnK019elmox3EHRj.w0'
         uid: 1001
         groups: # Empty by default, here we give it some groups
-        - docker
         - sudo
         - www-data
         - users
@@ -31,17 +28,16 @@
         shell: /bin/zsh       # Defaults to /bin/bash
         system: no             # Defaults to no
         createhome: yes        # Defaults to yes
-        home: /home/sepidre  # Defaults to /home/<username>
+        home: /home/{{ usr }}  # Defaults to /home/<username>
 - hosts: mac
   become: yes
   tasks:
     - name: Create a login user
       user:
-        name: sepidre
-        password: '1234'
+        name: '{{ usr }}'
+        password: '{{ usrpwdmac }}'
         uid: 1001
         groups: # Empty by default, here we give it some groups
-        - docker
         - sudo
         - www-data
         - users
@@ -49,7 +45,7 @@
         shell: /bin/zsh       # Defaults to /bin/bash
         system: no             # Defaults to no
         createhome: yes        # Defaults to yes
-        home: /home/sepidre  # Defaults to /home/<username>
+        home: /home/{{ usr }}  # Defaults to /home/<username>
 - hosts: all
   become: yes
   tasks:        

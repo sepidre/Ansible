@@ -2,18 +2,31 @@
 - hosts: all
   become: yes
   tasks:
-    - name: Install OhMyZSH
-      ansible.builtin.shell: sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-    - name: Install user packages
-      ansible.builtin.package:
+    - name: Install Preztom
+    #  ansible.builtin.expect:
+    #    command: /bin/sh "curl -fsSL https://raw.githubusercontent.com/gustavohellwig/gh-zsh/main/gh-zsh.sh | bash"
+    #    echo: yes
+    #    timeout: "300"
+    #    responses:
+    #      (.*)Please, type your password(.*): "{{ usrpwdmac }}"
+    #  shell: |
+    #    set timeout 300
+    #    curl -fsSL https://raw.githubusercontent.com/gustavohellwig/gh-zsh/main/gh-zsh.sh | bash
+    #    expect "Please, type your password"
+    #    send {{ usrpwdmac }}\r
+    #    interact
+    #    exit 0
+      shell: curl -fsSL https://raw.githubusercontent.com/sepidre/presto-prezto/main/presto-prezto.sh | bash
+      
+    - name: Install powerlevel10k
+      package:
         name: 
           - neofetch
         state: present
-    - name: Install powerlevel10k via git module
-      ansible.builtin.git:
-        repo: https://github.com/romkatv/powerlevel10k.git
-        dest: ${ZSH_CUSTOM:-{{ HOME }}/.oh-my-zsh/custom}/themes/powerlevel10k
-    # Oder?
-    - name: Install powerlevel10k via shell module
-      ansible.builtin.shell: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-    
+    - name: Copy file with owner and permissions
+      copy:
+        src: UserRoot/*
+        dest: /home/{{ usr }}/
+        owner: "{{ usr }}"
+        group: "{{ usr }}"
+        mode: '0644'

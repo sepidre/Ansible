@@ -1,11 +1,14 @@
 [master]
-192.168.1.1
+192.168.178.71
 
 [nodes]
-192.168.1.2
-192.168.1.3
+#192.168.1.2
+#192.168.1.3
 #....
 
+[nonmac]
+192.168.178.71
+
 [all:vars]
-ansible_ssh_user: root
-ansible_ssh_pass: 1234
+ansible_ssh_user=root
+ansible_ssh_pass=1234
