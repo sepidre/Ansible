@@ -191,8 +191,8 @@ if [[ "$OS" == "Linux" ]] || [[ "$OS" == "Darwin" ]] ; then
 
     # Patch Prezto runcoms
     echo -e "\nPatching Prezto runcoms"
-    (cd ~/.zprezto/runcoms/ && curl -O https://raw.githubusercontent.com/JGroxz/presto-prezto/main/zshrc) &> /dev/null
-    (cd ~/.zprezto/runcoms/ && curl -O https://raw.githubusercontent.com/JGroxz/presto-prezto/main/zpreztorc) &> /dev/null
+    (cd ~/.zprezto/runcoms/ && curl -O https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/zshrc) &> /dev/null
+    (cd ~/.zprezto/runcoms/ && curl -O https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/zshrc/zpreztorc) &> /dev/null
     if [[ "$OS" == "Linux" ]]; then
         sudo cp ~/.zshrc /root/
     fi
@@ -214,7 +214,7 @@ if [[ "$OS" == "Linux" ]] || [[ "$OS" == "Darwin" ]] ; then
         P10K_CONFIG_FILE=".p10k.zsh"
     fi
 
-    (cd ~/ && curl -o ".p10k.zsh" "https://raw.githubusercontent.com/JGroxz/presto-prezto/main/${P10K_CONFIG_FILE}") &> /dev/null
+    (cd ~/ && curl -o ".p10k.zsh" "https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/${P10K_CONFIG_FILE}") &> /dev/null
     if [[ "$OS" == "Linux" ]]; then
         sudo cp ~/.p10k.zsh /root/
     fi
