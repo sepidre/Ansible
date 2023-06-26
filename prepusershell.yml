@@ -16,7 +16,7 @@
     #    send {{ usrpwdmac }}\r
     #    interact
     #    exit 0
-      shell: curl -fsSL https://raw.githubusercontent.com/sepidre/presto-prezto/main/presto-prezto.sh | bash
+      shell: curl -fsSL https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/install_shell.sh | bash
       
     - name: Install powerlevel10k
       package:
