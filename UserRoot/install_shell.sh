@@ -272,7 +272,7 @@ if [[ "$OS" == "Linux" ]] || [[ "$OS" == "Darwin" ]] ; then
         'try_exec_zsh' '/bin/zsh' "$@" || 'return'
     }
     'exec_zsh' '-i'
-
+    exit 0
 else
     echo "This script is only supported on macOS and Linux."
     exit 0
