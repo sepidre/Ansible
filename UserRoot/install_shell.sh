@@ -93,8 +93,14 @@ if [[ "$OS" == "Linux" ]] ; then
         echo "Could not make Zsh the default shell: Zsh could not be found. This means that installation has failed. Please check the logs above to find the issue."
         exit 1
     fi
-
     echo -e "\nPresto-Prezto configuration complete!\n"
+
+    #--------------------------------------------------
+    # Neofetch
+    #--------------------------------------------------
+    echo -e "\nDownloading theme configuration"
+
+    (curl -Lo ".config/neofetch/config.conf" "https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.config/neofetch/config.conf") &> /dev/null
 
     exit 0
 else
