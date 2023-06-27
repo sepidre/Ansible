@@ -4,174 +4,21 @@
 # 
 # Based on https://github.com/gustavohellwig/gh-zsh
 
-
-#--------------------------------------------------
-# Parse CLI options (logic based on https://github.com/ryanoasis/nerd-fonts/blob/master/install.sh)
-#--------------------------------------------------
-optspec=":f-:"
-while getopts "$optspec" optchar; do
-  case "${optchar}" in
-
-    # Short options
-    f) WITH_FONT=true;;
-
-    -)
-      case "${OPTARG}" in
-        # Long options
-        font) WITH_FONT=true;;
-      esac;;
-
-    *)
-      echo "Unknown option -${OPTARG}" >&2
-      exit 1
-      ;;
-
-  esac
-done
-shift $((OPTIND-1))
-
-
 #--------------------------------------------------
 # Shell Configurations
 #--------------------------------------------------
 OS="$(uname)"
-if [[ "$OS" == "Linux" ]] || [[ "$OS" == "Darwin" ]] ; then
-    echo
-    if [[ "$OS" == "Linux" ]]; then
-        #echo "--> Please, type your password (to 'sudo apt install' the requirements):"
-        sudo apt update -y
-        sudo apt install -y zsh bat git
-        echo -e "\nInstalling zsh, bat and git"
-    fi
-    if [[ "$OS" == "Darwin" ]]; then
-        # Inspired by https://github.com/Homebrew/brew
-        version_gt() {
-        [[ "${1%.*}" -gt "${2%.*}" ]] || [[ "${1%.*}" -eq "${2%.*}" && "${1#*.}" -gt "${2#*.}" ]]
-        }
-        version_ge() {
-        [[ "${1%.*}" -gt "${2%.*}" ]] || [[ "${1%.*}" -eq "${2%.*}" && "${1#*.}" -ge "${2#*.}" ]]
-        }
-        major_minor() {
-        echo "${1%%.*}.$(x="${1#*.}"; echo "${x%%.*}")"
-        }
-        macos_version="$(major_minor "$(/usr/bin/sw_vers -productVersion)")"
-        should_install_command_line_tools() {
-        if version_gt "$macos_version" "10.13"; then
-            ! [[ -e "/Library/Developer/CommandLineTools/usr/bin/git" ]]
-        else
-            ! [[ -e "/Library/Developer/CommandLineTools/usr/bin/git" ]] ||
-            ! [[ -e "/usr/include/iconv.h" ]]
-        fi
-        }
-        if should_install_command_line_tools && version_ge "$macos_version" "10.13"; then
-            echo "--> When prompted for the password, enter your Mac login password."
-            shell_join() {
-                local arg
-                printf "%s" "$1"
-                shift
-                for arg in "$@"; do
-                    printf " "
-                    printf "%s" "${arg// /\ }"
-                done
-            }
-            chomp() {
-                printf "%s" "${1/"$'\n'"/}"
-            }
-            have_sudo_access() {
-                local -a args
-                if [[ -n "${SUDO_ASKPASS-}" ]]; then
-                    args=("-A")
-                elif [[ -n "${NONINTERACTIVE-}" ]]; then
-                    args=("-n")
-                fi
-            }
-            have_sudo_access() {
-                local -a args
-                if [[ -n "${SUDO_ASKPASS-}" ]]; then
-                    args=("-A")
-                elif [[ -n "${NONINTERACTIVE-}" ]]; then
-                    args=("-n")
-                fi
-
-                if [[ -z "${HAVE_SUDO_ACCESS-}" ]]; then
-                    if [[ -n "${args[*]-}" ]]; then
-                    SUDO="/usr/bin/sudo ${args[*]}"
-                    else
-                    SUDO="/usr/bin/sudo"
-                    fi
-                    if [[ -n "${NONINTERACTIVE-}" ]]; then
-                    ${SUDO} -l mkdir &>/dev/null
-                    else
-                    ${SUDO} -v && ${SUDO} -l mkdir &>/dev/null
-                    fi
-                    HAVE_SUDO_ACCESS="$?"
-                fi
-
-                if [[ -z "${HOMEBREW_ON_LINUX-}" ]] && [[ "$HAVE_SUDO_ACCESS" -ne 0 ]]; then
-                    abort "Need sudo access on macOS (e.g. the user $USER needs to be an Administrator)!"
-                fi
-
-                return "$HAVE_SUDO_ACCESS"
-            }
-            execute() {
-                if ! "$@"; then
-                    abort "$(printf "Failed during: %s" "$(shell_join "$@")")"
-                fi
-            }
-            execute_sudo() {
-                local -a args=("$@")
-                if have_sudo_access; then
-                    if [[ -n "${SUDO_ASKPASS-}" ]]; then
-                    args=("-A" "${args[@]}")
-                    fi
-                    execute "/usr/bin/sudo" "${args[@]}"
-                else
-                    execute "${args[@]}"
-                fi
-            }
-            TOUCH="/usr/bin/touch"
-            clt_placeholder="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
-            execute_sudo "$TOUCH" "$clt_placeholder"
-            clt_label_command="/usr/sbin/softwareupdate -l |
-                                grep -B 1 -E 'Command Line Tools' |
-                                awk -F'*' '/^ *\\*/ {print \$2}' |
-                                sed -e 's/^ *Label: //' -e 's/^ *//' |
-                                sort -V |
-                                tail -n1"
-            clt_label="$(chomp "$(/bin/bash -c "$clt_label_command")")"
-
-            if [[ -n "$clt_label" ]]; then
-                printf "Xcode Command Line Tools not found\nInstalling...\n"
-                execute_sudo "/usr/sbin/softwareupdate" "-i" "$clt_label" &> /dev/null
-                execute_sudo "/bin/rm" "-f" "$clt_placeholder" &> /dev/null
-                execute_sudo "/usr/bin/xcode-select" "--switch" "/Library/Developer/CommandLineTools" &> /dev/null
-            fi
-        fi
-        # Inspired by https://github.com/Homebrew/brew
-    fi
-    echo -e "\nShell Configurations"
-    if [[ "$OS" == "Darwin" ]]; then
-        chsh -s /bin/zsh &> /dev/null
-    fi
-    if [[ "$OS" == "Linux" ]]; then
-        sudo usermod -s /usr/bin/zsh $(whoami) &> /dev/null
-        sudo usermod -s /usr/bin/zsh sepidre &> /dev/null
-    fi
+if [[ "$OS" == "Linux" ]] ; then
+    sudo usermod -s /usr/bin/zsh $(whoami) &> /dev/null
+    sudo usermod -s /usr/bin/zsh sepidre &> /dev/null
     if mv -n ~/.zshrc ~/.zshrc_backup_$(date +"%Y-%m-%d_%H:%M:%S") &> /dev/null; then
         echo -e "\n--> Backing up the current .zshrc config to .zshrc_backup-date"
     fi
-
     #--------------------------------------------------
     # LSDeluxe
     #--------------------------------------------------
     echo -e "\nInstalling LSDeluxe"
-    if [[ "$OS" == "Linux" ]]; then
-        curl -fsL https://raw.githubusercontent.com/wimpysworld/deb-get/main/deb-get | sudo -E bash -s install deb-get
-        sudo deb-get install lsd
-    fi
-    if [[ "$OS" == "Darwin" ]]; then
-        brew install lsd &> /dev/null
-    fi
+    curl -sS https://webi.sh/lsd | sh
 
     #--------------------------------------------------
     # Prezto and plugins
@@ -193,13 +40,10 @@ if [[ "$OS" == "Linux" ]] || [[ "$OS" == "Darwin" ]] ; then
     echo -e "\nPatching Prezto runcoms"
     (cd ~/.zprezto/runcoms/ && curl -O https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/zshrc) &> /dev/null
     (cd ~/.zprezto/runcoms/ && curl -O https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/zpreztorc) &> /dev/null
-    if [[ "$OS" == "Linux" ]]; then
-        sudo cp ~/.zshrc /root/
-    fi
 
     # Download zplug
     echo -e "\nDownloading zplug..."
-    git clone https://github.com/zplug/zplug ~/.zplug
+    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 
     echo -e "\nPrezto configuration complete (plugins will be installed on the first shell run)"
 
@@ -208,10 +52,7 @@ if [[ "$OS" == "Linux" ]] || [[ "$OS" == "Darwin" ]] ; then
     #--------------------------------------------------
     echo -e "\nDownloading theme configuration"
 
-    (cd ~/ && curl -o ".p10k.zsh" "https://github.com/sepidre/Ansible/blob/main/UserRoot/.p10k.zsh") &> /dev/null
-    if [[ "$OS" == "Linux" ]]; then
-        sudo cp ~/.p10k.zsh /root/
-    fi
+    (cd ~/ && curl -o ".p10k.zsh" "https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.p10k.zsh") &> /dev/null
     echo -e "\nTheme configuration done"
     echo
     echo -e "Installing Meslo Nerd Font"
@@ -234,11 +75,8 @@ if [[ "$OS" == "Linux" ]] || [[ "$OS" == "Darwin" ]] ; then
     (curl -Lo "${FONTS_FOLDER_PATH}/MesloLGS NF Bold Italic.ttf" "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf") &> /dev/null
 
     # Refresh font cache if on Linux
-    if [[ "$OS" == "Linux" ]]; then
-        echo
-        echo -e "Resetting Linux font cache"
-        (fc-cache -f -v) &> /dev/null
-    fi
+    echo -e "Resetting Linux font cache"
+    (fc-cache -f -v) &> /dev/null
 
     echo -e "\nInstalled the font"
     fi
