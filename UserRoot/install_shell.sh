@@ -52,7 +52,7 @@ if [[ "$OS" == "Linux" ]] ; then
     #--------------------------------------------------
     echo -e "\nDownloading theme configuration"
 
-    (cd ~/ && curl -o ".p10k.zsh" "https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.p10k.zsh") &> /dev/null
+    (wget -O ~\.p10k.zsh 'https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.p10k.zsh') &> /dev/null
     echo -e "\nTheme configuration done"
     echo
     echo -e "Installing Meslo Nerd Font"
@@ -79,7 +79,6 @@ if [[ "$OS" == "Linux" ]] ; then
     (fc-cache -f -v) &> /dev/null
 
     echo -e "\nInstalled the font"
-    fi
 
     #--------------------------------------------------
     # Make Zsh the default shell
@@ -99,13 +98,10 @@ if [[ "$OS" == "Linux" ]] ; then
     # Neofetch
     #--------------------------------------------------
     echo -e "\nDownloading Neofetch configuration"
-
-    (curl -Lo ".config/neofetch/config.conf" "https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.config/neofetch/config.conf") &> /dev/null
-
-
+    (wget -O .config/neofetch/config.conf 'https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.config/neofetch/config.conf') &> /dev/null
     echo -e "\Neofetch configuration complete!\n"
     exit 0
 else
-    echo "This script is only supported on macOS and Linux."
+    echo "This script is only supported on Linux."
     exit 0
 fi
