@@ -13,11 +13,3 @@
         state: present
     - name: Install Pureztom
       shell: curl -fsSL https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/install_shell.sh | bash
-   
-    - name: Copy file with owner and permissions
-      copy:
-        src: UserRoot/*
-        dest: /home/{{ usr }}/
-        owner: "{{ usr }}"
-        group: "{{ usr }}"
-        mode: '0644'

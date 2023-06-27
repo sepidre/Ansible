@@ -98,10 +98,12 @@ if [[ "$OS" == "Linux" ]] ; then
     #--------------------------------------------------
     # Neofetch
     #--------------------------------------------------
-    echo -e "\nDownloading theme configuration"
+    echo -e "\nDownloading Neofetch configuration"
 
     (curl -Lo ".config/neofetch/config.conf" "https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.config/neofetch/config.conf") &> /dev/null
 
+
+    echo -e "\Neofetch configuration complete!\n"
     exit 0
 else
     echo "This script is only supported on macOS and Linux."

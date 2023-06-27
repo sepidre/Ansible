@@ -121,7 +121,7 @@ plugins=(
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-″
+
 export GITHUB_USER=sepidre
 export HUB_PROTOCOL=https
 
@@ -192,6 +192,19 @@ alias dietpi-morsecode='/boot/dietpi/dietpi-morsecode'
 alias dietpi-sync='/boot/dietpi/dietpi-sync'
 alias dietpi-backup='/boot/dietpi/dietpi-backup'
 alias dietpi-bugreport='/boot/dietpi/dietpi-bugreport'
+alias dietpi-cloudshell='dietpi-cloudshell'
+alias dietpi-config='dietpi-config'
+alias dietpi-cpuinfo='dietpi-cpuinfo'
+alias dietpi-ddns='dietpi-ddns'
+alias dietpi-drive_manager='dietpi-drive_manager'
+alias dietpi-explorer='dietpi-explorer'
+alias dietpi-led_control='dietpi-led_control'
+alias dietpi-login='dietpi-login'
+alias dietpi-services='dietpi-services'
+alias dietpi-software='dietpi-software'
+alias dietpi-survey='dietpi-survey'
+alias dietpi-update='dietpi-update'
+alias dietpi-vpn='dietpi-vpn'
 
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
