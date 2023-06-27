@@ -171,11 +171,14 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias bat="batcat"
+alias lsd="/home/sepidre/.local/bin/lsd"
 alias ls="lsd -F"
 alias la="lsd -AF"
 alias ll="lsd -lAF"
 alias lg="lsd -F --group-dirs=first"
 alias tree="lsd -AF --tree"
+alias cat="bat --paging=never"
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
