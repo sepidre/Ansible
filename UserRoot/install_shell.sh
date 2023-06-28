@@ -99,6 +99,7 @@ if [[ "$OS" == "Linux" ]] ; then
     # Neofetch
     #--------------------------------------------------
     echo -e "\nDownloading Neofetch configuration"
+    neofetch
     wget -O ~/.config/neofetch/config.conf 'https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.config/neofetch/config.conf'
     echo -e "\Neofetch configuration complete!\n"
     exit 0

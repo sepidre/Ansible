@@ -1,37 +1,40 @@
 ---
-server:
-  hosts:
-    master:
-      ansible_host: 10.16.10.11
-    node1:
-      ansible_host: 10.16.10.12
-    node2:
-      ansible_host: 10.16.10.11
-    node3:
-      ansible_host: 10.16.10.12
-    node4:
-      ansible_host: 10.16.10.11
-  vars:
-    ansible_ssh_user: sepidre
-
-initlinux:
+all:
   children:
     server:
-  vars:
-    ansible_ssh_user: root
-    #ansible_ssh_pass: 1234
-    ansible_ssh_pass: !vault |
-          $ANSIBLE_VAULT;1.2;AES256;root
-          34346138386534333161353263343762663937663665343335336130643064363235386139336536
-          6463313461636531333636316239666563316266353031610a653965626139623033346436616262
-          33336333653337663730623761633264633064643439303539363966383963643639306462623231
-          3130343465656536330a643966363635343665653930666231396262303235643366333662653165
-          3832
+      hosts:
+        master:
+          ansible_host: 192.168.178.84
+        node1:
+          ansible_host: 192.168.178.85
+        node2:
+          ansible_host: 192.168.178.86
+        node3:
+          ansible_host: 192.168.178.87
+        node4:
+          ansible_host: 192.168.178.88
+    init:
+      children:
+        server:
+      vars:
+        ansible_user: root
+        ansible_password: 1234
 
-usershell:
-  children:
-    server:
+    initlinux:
+      children:
+        server:
+      vars:
+        ansible_user: root
+        ansible_password: 1234
 
-docker:
-  children:
-    server:
+    usershell:
+      children:
+        server:
+      vars:
+        ansible_user: sepidre
+
+    docker:
+      children:
+        server:
+      vars:
+        ansible_user: sepidre

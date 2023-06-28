@@ -20,13 +20,7 @@
         # get it with mkpasswd --method=sha-512 for non mac
         #ansible-vault encrypt_string --vault-id sepidre@prompt 'sepidre_pwd' --name 'password'
         #password: '{{ usrpwd }}' #'$6$R/4YUut1qdGneQFy$oB7bNV0GUykAeT0Xab/Cf0ORvXuX8wdsaETFO3qiOBpmL23Eu6nb2BZe5So5iaMvRQDWnK019elmox3EHRj.w0'
-        password: !vault |
-          $ANSIBLE_VAULT;1.2;AES256;sepidre
-          62353636666438333961633163376530356265313266326462666534333831306163346338333964
-          6132623962353036303761306432633635626264393537380a326362393034623935373636666136
-          36656330626161316539383034393765343730636665613964613838623036313162373966383034
-          6363333138393465390a366536633861326138633839663731383662363762396134643638643162
-          3561
+        password: '$6$R/4YUut1qdGneQFy$oB7bNV0GUykAeT0Xab/Cf0ORvXuX8wdsaETFO3qiOBpmL23Eu6nb2BZe5So5iaMvRQDWnK019elmox3EHRj.w0'
         uid: 1001
         groups: # Empty by default, here we give it some groups
         - sudo
@@ -45,13 +39,7 @@
         name: '{{ usr }}'
         #ansible-vault encrypt_string --vault-id sepidreclean@prompt 'sepidre_pwd' --name 'password'
         #password: '{{ usrpwdmac }}'
-        password: !vault |
-          $ANSIBLE_VAULT;1.2;AES256;sepidreclean
-          31653632306164306662326366313030356163363465343263626163313033393033653435363464
-          3063396361363037383065336536613664653331633465650a363438653335393662343963373932
-          31373334363936396135626339316434666330366364383466393162333337333465333162613865
-          6637333763623761630a333632396364666636363932653862386630356231356132313633336261
-          3435
+        password: '1234'
         uid: 1001
         groups: # Empty by default, here we give it some groups
         - sudo
