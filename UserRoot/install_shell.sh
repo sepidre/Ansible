@@ -51,8 +51,9 @@ if [[ "$OS" == "Linux" ]] ; then
     # Theme (Powerlevel10k)
     #--------------------------------------------------
     echo -e "\nDownloading theme configuration"
+    cd ~/
 
-    (wget -O ~\.p10k.zsh 'https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.p10k.zsh') &> /dev/null
+    (wget -O ~/.p10k.zsh 'https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.p10k.zsh') &> /dev/null
     echo -e "\nTheme configuration done"
     echo
     echo -e "Installing Meslo Nerd Font"
@@ -98,7 +99,7 @@ if [[ "$OS" == "Linux" ]] ; then
     # Neofetch
     #--------------------------------------------------
     echo -e "\nDownloading Neofetch configuration"
-    (wget -O .config/neofetch/config.conf 'https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.config/neofetch/config.conf') &> /dev/null
+    wget -O ~/.config/neofetch/config.conf 'https://raw.githubusercontent.com/sepidre/Ansible/main/UserRoot/.config/neofetch/config.conf'
     echo -e "\Neofetch configuration complete!\n"
     exit 0
 else
